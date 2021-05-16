@@ -1,3 +1,5 @@
+from sms import send
+
 class Queue:
 
     def __init__(self, mode, current_queue=[]):
@@ -9,10 +11,21 @@ class Queue:
             self._mode = mode
     
     def enqueue(self, item):
-        pass
+        self._queue.append(item)
     def dequeue(self):
-        pass
+        if self._mode == 'LIFO':
+            person = self._queue.pop(0)
+        else:
+            person = self._queue.pop()
+        
+        try:
+            send(body=f"{person} it's your turn!")
+            print("Message successfully sended")
+        except Exception as error:
+            print("Sending the message failed")
     def get_queue(self):
         return self._queue
     def size(self):
-        pass
+        return len(self._queue)
+    def load_saved_queue(self, saved_queue):
+        self._queue = [*saved_queue]
